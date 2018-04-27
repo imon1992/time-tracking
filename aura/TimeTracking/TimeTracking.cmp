@@ -1,0 +1,102 @@
+<!--
+ - Created by akolotii on 24.04.2018.
+ -->
+
+<aura:component description="TimeTracking" implements="force:appHostable" controller="L_userAssignmentTimeController">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="updateEmployeeHours" event="c:UpdateEmployeeHoursOnProjectEvent"
+                  action="{!c.updateEmployeeHours}"/>
+
+    <aura:attribute name="dataForSelectedPeriod" type="List"/>
+    <aura:attribute name="employeeProjects" type="List"/>
+
+    <aura:attribute name="date" type="Date"/>
+    <aura:attribute name="startWeek" type="Date"/>
+    <aura:attribute name="endWeek" type="Date"/>
+    <aura:attribute name="dateForShow" type="String"/>
+    <aura:attribute name="tableHeaderObject" type="sObject"/>
+
+    <div class="slds-large-size--4-of-12 slds-m-bottom--large">
+        <article class="slds-card">
+            <div class="slds-card__body slds-m-around_medium">
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control">
+                        <div>
+                                <span class="slds-show_inline-block" style="width:120px">
+                                    <b>{!v.dateForShow}</b>
+                                </span>
+                            <div class="slds-button-group slds-m-left--small" role="group">
+                                <lightning:buttonIcon iconName="utility:chevronleft"
+                                                      variant="border-filled"
+                                                      onclick="{!c.prevWeek}"
+                                                      alternativeText="Project Info"
+                                                      class="slds-button marginAuto"/>
+                                <lightning:buttonIcon iconName="utility:chevronright"
+                                                      variant="border-filled"
+                                                      onclick="{!c.nextWeek}"
+                                                      alternativeText="add Employee to project"
+                                                      class="slds-button marginAuto"/>
+                                <div style="width:180px">
+                                    <ui:inputDate aura:id="mySelectedDate"
+                                                  value="{!v.date}"
+                                                  displayDatePicker="true"
+                                                  change="{!c.handleDateChange}"
+                                                  class="slds-m-left--large"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+    <article class="slds-card slds-size--7-of-12">
+        <lightning:spinner variant="brand" size="large" aura:id="spinner"/>
+        <div class="slds-card__body slds-m-around_medium">
+            <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                    <table class="slds-table slds-table_bordered  slds-table_col-bordered slds-m-bottom_medium slds-max-medium-table_stacked-horizontal slds-no-row-hover">
+                        <thead>
+                        <tr class="slds-text-title_caps">
+                            <th scope="col">
+                                <div class="slds-truncate slds-text-align_center" title="Project Name">
+                                    <b>Project Name</b>
+                                </div>
+                            </th>
+                            <aura:iteration items="{!v.tableHeaderObject}" var="dateHeader" indexVar="listIndex">
+                                <th scope="col">
+                                    <div class="slds-truncate slds-text-align_center">
+                                        <b>{!dateHeader.weekDay}</b>
+                                        <span class="slds-show">{!dateHeader.dayAndMonth}</span>
+                                    </div>
+                                </th>
+                            </aura:iteration>
+                        </tr>
+                        </thead>
+                        <tbody class="backSetTable">
+                        <aura:iteration items="{!v.employeeProjects}" var="item" indexVar="projectKey">
+                            <tr id="projectsTime">
+                                <td data-label="Project Name">
+                                    <div class="slds-truncate slds-text-align_center">{!item.projectName}</div>
+                                </td>
+                                <aura:iteration items="{!item.employeeAssignmentTimeWrapper}" var="hours1"
+                                                indexVar="dayKey">
+                                    <td data-label="{!hours1.trackingDate}"
+                                        class="{!(dayKey == 6 || dayKey == 5) ? 'weekendDays':'workingDays'}">
+                                        <div class="slds-truncate slds-text-align_center">
+                                            <c:InputForDaysValues inputParams="{!hours1}"
+                                                                  projectId="{!item.projectId}"
+                                                                  dataForPeriod="{!v.dataForSelectedPeriod}"
+                                                                  dayKey="{!dayKey}"/>
+                                        </div>
+                                    </td>
+                                </aura:iteration>
+                            </tr>
+                        </aura:iteration>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </article>
+</aura:component>

@@ -1,0 +1,10 @@
+<!--
+ - Created by akolotii on 25.04.2018.
+ -->
+
+<aura:event type="COMPONENT" description="UpdateEmployeeHoursOnProjectEvent">
+    <aura:attribute name="projectId" type="String"  access="global"/>
+    <aura:attribute name="hours" type="Integer"  access="global"/>
+    <!--<aura:attribute name="projectKey" type="Integer"  access="global"/>-->
+    <aura:attribute name="date" type="Date"  access="global"/>
+</aura:event>

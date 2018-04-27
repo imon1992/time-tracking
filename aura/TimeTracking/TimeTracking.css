@@ -1,0 +1,17 @@
+/**
+ * Created by akolotii on 27.04.2018.
+ */
+.THIS .marginAuto{
+    margin: auto;
+}
+.THIS .weekendDays{
+    background-color: aliceblue;
+}
+
+.THIS #projectsTime:hover .workingDays{
+    background-color:rgb(243,242,242);
+}
+
+.THIS .uiInput--datetime .datePicker-openIcon{
+    right: -0.8rem;
+}

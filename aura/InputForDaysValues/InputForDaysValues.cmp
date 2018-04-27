@@ -1,0 +1,22 @@
+<!--
+ - Created by akolotii on 25.04.2018.
+ -->
+
+<aura:component description="InputForDaysValues">
+
+    <aura:registerEvent name="updateEmployeeHours" type="c:UpdateEmployeeHoursOnProjectEvent"/>
+
+    <aura:attribute name="inputParams" type="sObject"/>
+    <aura:attribute name="oldValue" type="Integer" />
+    <aura:attribute name="projectId" type="String"/>
+    <aura:attribute name="dayKey" type="String"/>
+    <aura:attribute name="dataForPeriod" type="List"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <lightning:input value="{!v.inputParams.hours}"
+                     type="number"
+                     onchange="{!c.getOldValue232321}"
+                     min="0"
+                     aura:id="newValue"/>
+</aura:component>
